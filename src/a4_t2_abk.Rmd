@@ -1,0 +1,50 @@
+---
+title: "a4_t2_abk"
+author: "Alyssa Kibbe"
+date: "11/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, incluce=FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(here)
+library(lubridate)
+```
+
+# Report on Bonanza Creek Snowshoe Hare
+
+## Introduction
+#### The study of snowshoe hares at five locations in the Tanana Valley hoped to look at comparisons in populations over the five year testing period. It is known that snowshoe hares population have large fluctuations every 8-11 years. This study hoped to produce qualitiative data while observing the same populations over multiple years. The experimental variables included sex, age, weight, hind foot length (mm), animal identifer, study type, and any unique notes on the individual hare.  
+
+## Data and analyses:
+#### 3-4 sentence section in which you describe the data (include citation), include overview of the main analysis, statistical methods and tools used. 
+
+
+```{r}
+# read in the data
+hares<-read.csv(here("data", "bonanza_hares.csv"))
+```
+
+```{r}
+# make subgroups
+juvenile <- hares %>%
+  filter(age == "j") %>% 
+  mutate(date_new = mdy(date)) %>% 
+  mutate(year = year(date_new))
+
+juvenile_per_year <- juvenile %>% 
+  group_by(year) %>% 
+  summarize(count_per_year = n())
+
+ggplot(juvenile_per_year, aes(x =  year, y = count_per_year))+
+  geom_col()+
+  labs( x = "", y = "Hare Count", title = "Variation in Hare Count from 1999 to 2012")+
+  theme_bw()
+
+```
+
+
+
+
+
